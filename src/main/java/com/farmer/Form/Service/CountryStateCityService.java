@@ -11,8 +11,8 @@ import org.springframework.web.client.RestTemplate;
 public class CountryStateCityService {
     @Value("${countrystatecity.api.key}")
     private String API_KEY;
-    // actual API key
-    private final String BASE_URL = "https://api.countrystatecity.in/v1/";
+    @Value("${countrystatecity.api.url}")
+    private String BASE_URL;
  
     private RestTemplate restTemplate = new RestTemplate();
  
@@ -23,22 +23,22 @@ public class CountryStateCityService {
     }
  
     public String getCountries() {
-        ResponseEntity<String> response = restTemplate.exchange(BASE_URL + "countries",
+        ResponseEntity<String> response = restTemplate.exchange(BASE_URL + "/countries",
                 org.springframework.http.HttpMethod.GET, createHttpEntity(), String.class);
         return response.getBody();
     }
  
     public String getStates(String countryCode) {
-        ResponseEntity<String> response = restTemplate.exchange(BASE_URL + "countries/" + countryCode + "/states",
+        ResponseEntity<String> response = restTemplate.exchange(BASE_URL + "/countries/" + countryCode + "/states",
                 org.springframework.http.HttpMethod.GET, createHttpEntity(), String.class);
-        System.out.println(BASE_URL + "countries/" + countryCode + "/states");
+        System.out.println(BASE_URL + "/countries/" + countryCode + "/states");
         System.out.println(response.getBody());
         return response.getBody();
     }
  
     public String getDistricts(String countryCode, String stateCode) {
         ResponseEntity<String> response = restTemplate.exchange(
-                BASE_URL + "countries/" + countryCode + "/states/" + stateCode + "/cities",
+                BASE_URL + "/countries/" + countryCode + "/states/" + stateCode + "/cities",
                 org.springframework.http.HttpMethod.GET, createHttpEntity(), String.class);
         return response.getBody();
     }

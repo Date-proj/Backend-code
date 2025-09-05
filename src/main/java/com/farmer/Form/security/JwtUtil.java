@@ -7,6 +7,7 @@ import java.util.Map;
  
 import javax.crypto.SecretKey;
  
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.stereotype.Component;
@@ -20,10 +21,12 @@ import io.jsonwebtoken.security.Keys;
 public class JwtUtil {
  
     private static final long EXPIRATION_TIME = 86400000; // 1 day in milliseconds
-    private static final String SECRET_KEY = "kM3q4TbN8Gf9CWPc6rXLvTpyHZmF7xNCzKJQzTQ69no=";
+
+    @Value("${jwt.secret}")
+    private String secretKey;
  
-    private static SecretKey getSigningKey() {
-        return Keys.hmacShaKeyFor(Decoders.BASE64.decode(SECRET_KEY));
+    private SecretKey getSigningKey() {
+        return Keys.hmacShaKeyFor(Decoders.BASE64.decode(secretKey));
     }
  
     // Generate JWT token

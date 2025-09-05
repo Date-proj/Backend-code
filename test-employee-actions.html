@@ -223,7 +223,7 @@ async function assignFarmers(employeeId) {
             dataDiv.textContent = '';
             
             try {
-                const response = await fetch(`http://localhost:8080/api/employees/${testEmployeeId}/details`);
+                const response = await fetch(`http://ec2-13-48-25-176.eu-north-1.compute.amazonaws.com:8080/api/employees/${testEmployeeId}/details`);
                 const data = await response.json();
                 
                 if (response.ok) {
@@ -256,7 +256,7 @@ async function assignFarmers(employeeId) {
             dataDiv.textContent = '';
             
             try {
-                const response = await fetch(`http://localhost:8080/api/employees/${testEmployeeId}/give-login-access`, {
+                const response = await fetch(`http://ec2-13-48-25-176.eu-north-1.compute.amazonaws.com:8080/api/employees/${testEmployeeId}/give-login-access`, {
                     method: 'POST'
                 });
                 const data = await response.json();
@@ -291,7 +291,7 @@ async function assignFarmers(employeeId) {
             
             try {
                 // First get available farmers
-                const farmersResponse = await fetch(`http://localhost:8080/api/employees/${testEmployeeId}/available-farmers`);
+                const farmersResponse = await fetch(`http://ec2-13-48-25-176.eu-north-1.compute.amazonaws.com:8080/api/employees/${testEmployeeId}/available-farmers`);
                 const farmers = await farmersResponse.json();
                 
                 if (farmers.length === 0) {
@@ -304,7 +304,7 @@ async function assignFarmers(employeeId) {
                 // Assign first 2 farmers (if available)
                 const farmerIds = farmers.slice(0, 2).map(f => f.id);
                 
-                const response = await fetch(`http://localhost:8080/api/employees/${testEmployeeId}/assign-farmers`, {
+                const response = await fetch(`http://ec2-13-48-25-176.eu-north-1.compute.amazonaws.com:8080/api/employees/${testEmployeeId}/assign-farmers`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ farmerIds: farmerIds })
@@ -339,7 +339,7 @@ async function assignFarmers(employeeId) {
             dataDiv.textContent = '';
             
             try {
-                const response = await fetch(`http://localhost:8080/api/employees/${testEmployeeId}/available-farmers`);
+                const response = await fetch(`http://ec2-13-48-25-176.eu-north-1.compute.amazonaws.com:8080/api/employees/${testEmployeeId}/available-farmers`);
                 const data = await response.json();
                 
                 if (response.ok) {
@@ -369,7 +369,7 @@ async function assignFarmers(employeeId) {
             dataDiv.textContent = '';
             
             try {
-                const response = await fetch(`http://localhost:8080/api/employees/${testEmployeeId}/assigned-farmers`);
+                const response = await fetch(`http://ec2-13-48-25-176.eu-north-1.compute.amazonaws.com:8080/api/employees/${testEmployeeId}/assigned-farmers`);
                 const data = await response.json();
                 
                 if (response.ok) {
@@ -399,7 +399,7 @@ async function assignFarmers(employeeId) {
             dataDiv.textContent = '';
             
             try {
-                const response = await fetch(`http://localhost:8080/api/employees/${testEmployeeId}`, {
+                const response = await fetch(`http://ec2-13-48-25-176.eu-north-1.compute.amazonaws.com:8080/api/employees/${testEmployeeId}`, {
                     method: 'DELETE'
                 });
                 

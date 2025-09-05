@@ -44,7 +44,7 @@ Write-Host "Compilation successful!" -ForegroundColor Green
 
 # Start the application with optimized settings
 Write-Host "Starting Spring Boot application..." -ForegroundColor Yellow
-Write-Host "Application will be available at: http://localhost:8080" -ForegroundColor Cyan
+Write-Host "Application will be available at: http://ec2-13-48-25-176.eu-north-1.compute.amazonaws.com:8080" -ForegroundColor Cyan
 
 mvn spring-boot:run -Dspring-boot.run.jvmArguments="$JAVA_OPTS"
 

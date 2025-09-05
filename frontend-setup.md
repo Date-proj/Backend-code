@@ -14,7 +14,7 @@ Create `src/utils/api.js`:
 import axios from 'axios';
 
 // Set base URL for your Spring Boot backend
-const API_BASE_URL = 'http://localhost:8080';
+const API_BASE_URL = 'http://ec2-13-48-25-176.eu-north-1.compute.amazonaws.com:8080';
 
 const api = axios.create({
   baseURL: API_BASE_URL,

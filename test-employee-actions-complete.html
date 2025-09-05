@@ -279,7 +279,7 @@
             resultDiv.textContent = 'Loading employees...';
             
             try {
-                const response = await fetch('http://localhost:8080/api/employees/list');
+                const response = await fetch('http://ec2-13-48-25-176.eu-north-1.compute.amazonaws.com:8080/api/employees/list');
                 const data = await response.json();
                 
                 if (response.ok) {
@@ -312,7 +312,7 @@
             dataDiv.textContent = '';
             
             try {
-                const response = await fetch(`http://localhost:8080/api/employees/${employeeId}/details`);
+                const response = await fetch(`http://ec2-13-48-25-176.eu-north-1.compute.amazonaws.com:8080/api/employees/${employeeId}/details`);
                 const data = await response.json();
                 
                 if (response.ok) {
@@ -348,7 +348,7 @@
             dataDiv.textContent = '';
             
             try {
-                const response = await fetch(`http://localhost:8080/api/employees/${employeeId}/give-login-access`, {
+                const response = await fetch(`http://ec2-13-48-25-176.eu-north-1.compute.amazonaws.com:8080/api/employees/${employeeId}/give-login-access`, {
                     method: 'POST'
                 });
                 const data = await response.json();
@@ -385,7 +385,7 @@
             
             try {
                 // First get available farmers
-                const farmersResponse = await fetch(`http://localhost:8080/api/employees/${employeeId}/available-farmers`);
+                const farmersResponse = await fetch(`http://ec2-13-48-25-176.eu-north-1.compute.amazonaws.com:8080/api/employees/${employeeId}/available-farmers`);
                 const farmers = await farmersResponse.json();
                 
                 if (farmers.length === 0) {
@@ -398,7 +398,7 @@
                 // Assign first 2 farmers (if available)
                 const farmerIds = farmers.slice(0, 2).map(f => f.id);
                 
-                const response = await fetch(`http://localhost:8080/api/employees/${employeeId}/assign-farmers`, {
+                const response = await fetch(`http://ec2-13-48-25-176.eu-north-1.compute.amazonaws.com:8080/api/employees/${employeeId}/assign-farmers`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ farmerIds: farmerIds })
@@ -434,7 +434,7 @@
             dataDiv.textContent = '';
             
             try {
-                const response = await fetch(`http://localhost:8080/api/employees/${employeeId}/available-farmers`);
+                const response = await fetch(`http://ec2-13-48-25-176.eu-north-1.compute.amazonaws.com:8080/api/employees/${employeeId}/available-farmers`);
                 const data = await response.json();
                 
                 if (response.ok) {
@@ -466,7 +466,7 @@
             dataDiv.textContent = '';
             
             try {
-                const response = await fetch(`http://localhost:8080/api/employees/${employeeId}/assigned-farmers`);
+                const response = await fetch(`http://ec2-13-48-25-176.eu-north-1.compute.amazonaws.com:8080/api/employees/${employeeId}/assigned-farmers`);
                 const data = await response.json();
                 
                 if (response.ok) {
@@ -497,7 +497,7 @@
             dataDiv.textContent = '';
             
             try {
-                const response = await fetch(`http://localhost:8080/api/employees/${employeeId}`, {
+                const response = await fetch(`http://ec2-13-48-25-176.eu-north-1.compute.amazonaws.com:8080/api/employees/${employeeId}`, {
                     method: 'DELETE'
                 });
                 
@@ -529,7 +529,7 @@
                 
                 // Step 1: View employee details
                 workflow.push('Step 1: View employee details');
-                const viewResponse = await fetch(`http://localhost:8080/api/employees/${currentEmployeeId}/details`);
+                const viewResponse = await fetch(`http://ec2-13-48-25-176.eu-north-1.compute.amazonaws.com:8080/api/employees/${currentEmployeeId}/details`);
                 const viewData = await viewResponse.json();
                 if (viewResponse.ok) {
                     workflow.push('✅ Employee details fetched successfully');
@@ -539,7 +539,7 @@
                 
                 // Step 2: Give login access
                 workflow.push('Step 2: Give login access');
-                const loginResponse = await fetch(`http://localhost:8080/api/employees/${currentEmployeeId}/give-login-access`, {
+                const loginResponse = await fetch(`http://ec2-13-48-25-176.eu-north-1.compute.amazonaws.com:8080/api/employees/${currentEmployeeId}/give-login-access`, {
                     method: 'POST'
                 });
                 const loginData = await loginResponse.json();
@@ -553,7 +553,7 @@
                 
                 // Step 3: Get available farmers
                 workflow.push('Step 3: Get available farmers');
-                const availableResponse = await fetch(`http://localhost:8080/api/employees/${currentEmployeeId}/available-farmers`);
+                const availableResponse = await fetch(`http://ec2-13-48-25-176.eu-north-1.compute.amazonaws.com:8080/api/employees/${currentEmployeeId}/available-farmers`);
                 const availableData = await availableResponse.json();
                 if (availableResponse.ok) {
                     workflow.push(`✅ Found ${availableData.length} available farmers`);
@@ -565,7 +565,7 @@
                 if (availableData.length > 0) {
                     workflow.push('Step 4: Assign farmers');
                     const farmerIds = availableData.slice(0, 2).map(f => f.id);
-                    const assignResponse = await fetch(`http://localhost:8080/api/employees/${currentEmployeeId}/assign-farmers`, {
+                    const assignResponse = await fetch(`http://ec2-13-48-25-176.eu-north-1.compute.amazonaws.com:8080/api/employees/${currentEmployeeId}/assign-farmers`, {
                         method: 'POST',
                         headers: { 'Content-Type': 'application/json' },
                         body: JSON.stringify({ farmerIds: farmerIds })
@@ -580,7 +580,7 @@
                 
                 // Step 5: Get assigned farmers
                 workflow.push('Step 5: Get assigned farmers');
-                const assignedResponse = await fetch(`http://localhost:8080/api/employees/${currentEmployeeId}/assigned-farmers`);
+                const assignedResponse = await fetch(`http://ec2-13-48-25-176.eu-north-1.compute.amazonaws.com:8080/api/employees/${currentEmployeeId}/assigned-farmers`);
                 const assignedData = await assignedResponse.json();
                 if (assignedResponse.ok) {
                     workflow.push(`✅ Found ${assignedData.length} assigned farmers`);
@@ -605,7 +605,7 @@
             resultDiv.textContent = 'Testing email functionality...';
             
             try {
-                const response = await fetch(`http://localhost:8080/api/employees/${currentEmployeeId}/give-login-access`, {
+                const response = await fetch(`http://ec2-13-48-25-176.eu-north-1.compute.amazonaws.com:8080/api/employees/${currentEmployeeId}/give-login-access`, {
                     method: 'POST'
                 });
                 const data = await response.json();
@@ -640,14 +640,14 @@
             
             try {
                 // First give login access
-                const accessResponse = await fetch(`http://localhost:8080/api/employees/${currentEmployeeId}/give-login-access`, {
+                const accessResponse = await fetch(`http://ec2-13-48-25-176.eu-north-1.compute.amazonaws.com:8080/api/employees/${currentEmployeeId}/give-login-access`, {
                     method: 'POST'
                 });
                 const accessData = await accessResponse.json();
                 
                 if (accessResponse.ok) {
                     // Now test login with the temp password
-                    const loginResponse = await fetch('http://localhost:8080/api/auth/login', {
+                    const loginResponse = await fetch('http://ec2-13-48-25-176.eu-north-1.compute.amazonaws.com:8080/api/auth/login', {
                         method: 'POST',
                         headers: { 'Content-Type': 'application/json' },
                         body: JSON.stringify({
