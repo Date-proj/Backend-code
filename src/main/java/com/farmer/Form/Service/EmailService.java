@@ -32,6 +32,7 @@ public class EmailService {
         }
         try {
             SimpleMailMessage message = new SimpleMailMessage();
+            message.setFrom("dateproject@hinfinitysolutions.com");
             message.setTo(emailDto.getTo());
             message.setSubject(emailDto.getSubject());
             message.setText(emailDto.getBody());
@@ -50,6 +51,7 @@ public class EmailService {
         }
         try {
             SimpleMailMessage message = new SimpleMailMessage();
+            message.setFrom("dateproject@hinfinitysolutions.com");
             message.setTo(to);
             message.setSubject("Your OTP Code");
             message.setText("Your OTP is: " + otp);
@@ -75,6 +77,7 @@ public class EmailService {
                     .append("Regards,\nAgriStack Team");
 
             SimpleMailMessage message = new SimpleMailMessage();
+            message.setFrom("dateproject@hinfinitysolutions.com");
             message.setTo(to);
             message.setSubject("Welcome to AgriStack!");
             message.setText(body.toString());
@@ -98,6 +101,7 @@ public class EmailService {
                           "Regards,\nDigitalAgristack Team";
  
             SimpleMailMessage message = new SimpleMailMessage();
+            message.setFrom("dateproject@hinfinitysolutions.com");
             message.setTo(to);
             message.setSubject(subject);
             message.setText(body);
@@ -125,6 +129,7 @@ public class EmailService {
                     .append("The Farmer Management Team");
  
             SimpleMailMessage message = new SimpleMailMessage();
+            message.setFrom("dateproject@hinfinitysolutions.com");
             message.setTo(to);
             message.setSubject("Password Reset Confirmation");
             message.setText(body.toString());
@@ -153,6 +158,7 @@ public class EmailService {
                     .append("Regards,\nAgriStack Team");
 
             SimpleMailMessage message = new SimpleMailMessage();
+            message.setFrom("dateproject@hinfinitysolutions.com");
             message.setTo(to);
             message.setSubject("Your AgriStack Account is Approved!");
             message.setText(body.toString());
@@ -177,6 +183,7 @@ public class EmailService {
                     .append("Regards,\nAgriStack Team");
 
             SimpleMailMessage message = new SimpleMailMessage();
+            message.setFrom("dateproject@hinfinitysolutions.com");
             message.setTo(to);
             message.setSubject("Your AgriStack Account Registration Status");
             message.setText(body.toString());

@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Super Admin Creation</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .container {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        button {
+            background: #007bff;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            margin: 5px;
+        }
+        button:hover {
+            background: #0056b3;
+        }
+        .response {
+            background: #f8f9fa;
+            border: 1px solid #dee2e6;
+            border-radius: 4px;
+            padding: 15px;
+            margin: 10px 0;
+            white-space: pre-wrap;
+            font-family: monospace;
+        }
+        .success {
+            color: #28a745;
+        }
+        .error {
+            color: #dc3545;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Super Admin Test & Creation</h1>
+        
+        <h3>Test Super Admin Login</h3>
+        <button onclick="testSuperAdminLogin()">Test Login</button>
+        <div id="login-response" class="response"></div>
+        
+        <h3>Create Super Admin User</h3>
+        <button onclick="createSuperAdmin()">Create Super Admin</button>
+        <div id="create-response" class="response"></div>
+        
+        <h3>Check Database Connection</h3>
+        <button onclick="testDatabaseConnection()">Test DB Connection</button>
+        <div id="db-response" class="response"></div>
+    </div>
+
+    <script>
+        const BASE_URL = 'http://ec2-13-48-25-176.eu-north-1.compute.amazonaws.com:8080';
+
+        async function makeRequest(endpoint, options = {}) {
+            try {
+                const response = await fetch(`${BASE_URL}${endpoint}`, {
+                    headers: {
+                        'Content-Type': 'application/json',
+                        ...options.headers
+                    },
+                    ...options
+                });
+
+                const data = await response.json();
+                return {
+                    success: response.ok,
+                    status: response.status,
+                    data: data
+                };
+            } catch (error) {
+                return {
+                    success: false,
+                    status: 'NETWORK_ERROR',
+                    data: { error: error.message }
+                };
+            }
+        }
+
+        function displayResponse(elementId, result) {
+            const element = document.getElementById(elementId);
+            if (result.success) {
+                element.innerHTML = `<span class="success">✅ Success!</span>\n${JSON.stringify(result.data, null, 2)}`;
+            } else {
+                element.innerHTML = `<span class="error">❌ Error (${result.status}):</span>\n${JSON.stringify(result.data, null, 2)}`;
+            }
+        }
+
+        async function testSuperAdminLogin() {
+            const element = document.getElementById('login-response');
+            element.innerHTML = '<span>Testing login...</span>';
+            
+            const result = await makeRequest('/api/auth/test-login', {
+                method: 'POST',
+                body: JSON.stringify({
+                    userName: 'projecthinfintiy@12.in',
+                    password: 'Password123@'
+                })
+            });
+            
+            displayResponse('login-response', result);
+        }
+
+        async function createSuperAdmin() {
+            const element = document.getElementById('create-response');
+            element.innerHTML = '<span>Creating super admin...</span>';
+            
+            const result = await makeRequest('/api/auth/create-super-admin', {
+                method: 'POST',
+                body: JSON.stringify({
+                    name: 'Super Admin',
+                    email: 'projecthinfintiy@12.in',
+                    password: 'Password123@',
+                    phoneNumber: '9999999999'
+                })
+            });
+            
+            displayResponse('create-response', result);
+        }
+
+        async function testDatabaseConnection() {
+            const element = document.getElementById('db-response');
+            element.innerHTML = '<span>Testing database connection...</span>';
+            
+            const result = await makeRequest('/api/auth/test-db', {
+                method: 'GET'
+            });
+            
+            displayResponse('db-response', result);
+        }
+    </script>
+</body>
+</html>

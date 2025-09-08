@@ -26,7 +26,9 @@ public class JwtUtil {
     private String secretKey;
  
     private SecretKey getSigningKey() {
-        return Keys.hmacShaKeyFor(Decoders.BASE64.decode(secretKey));
+        // Convert the secret string to bytes for HMAC-SHA256
+        byte[] keyBytes = secretKey.getBytes();
+        return Keys.hmacShaKeyFor(keyBytes);
     }
  
     // Generate JWT token

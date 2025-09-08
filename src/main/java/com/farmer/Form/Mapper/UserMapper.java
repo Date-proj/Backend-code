@@ -18,6 +18,10 @@ public interface UserMapper {
     @Mapping(target = "kycStatus", ignore = true)
     @Mapping(target = "assignedEmployeeId", ignore = true)
     @Mapping(target = "forcePasswordChange", ignore = true)
+    @Mapping(target = "status", ignore = true)
+    @Mapping(target = "state", ignore = true)
+    @Mapping(target = "district", ignore = true)
+    @Mapping(target = "region", ignore = true)
     User toEntity(UserDTO dto);
 
     // Simple mapping to view DTO

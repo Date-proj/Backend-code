@@ -29,6 +29,10 @@ import com.farmer.Form.exception.UserAlreadyExistsException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.time.LocalDate;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import com.farmer.Form.Entity.Role;
+import com.farmer.Form.Entity.UserStatus;
 
 @RestController
 @RequestMapping("/api/auth")
@@ -41,6 +45,7 @@ public class AuthController {
     private final OtpService otpService;
     private final EmailService emailService;
     private final CountryStateCityService countryService;
+    private final PasswordEncoder passwordEncoder;
 
     // ✅ LOGIN
     @PostMapping("/login")
@@ -458,6 +463,102 @@ public class AuthController {
             ));
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(Map.of("error", e.getMessage()));
+        }
+    }
+
+    // 🔧 Test database connection
+    @GetMapping("/test-db")
+    public ResponseEntity<Map<String, Object>> testDatabase() {
+        try {
+            // Try to find the super admin user
+            User superAdmin = userService.getUserByEmailOrPhone("projecthinfintiy@12.in");
+            Map<String, Object> response = new HashMap<>();
+            response.put("success", true);
+            response.put("message", "Database connection successful");
+            response.put("superAdminExists", superAdmin != null);
+            if (superAdmin != null) {
+                response.put("superAdmin", Map.of(
+                    "id", superAdmin.getId(),
+                    "email", superAdmin.getEmail(),
+                    "name", superAdmin.getName(),
+                    "role", superAdmin.getRole().name(),
+                    "status", superAdmin.getStatus().name()
+                ));
+            }
+            return ResponseEntity.ok(response);
+        } catch (Exception e) {
+            Map<String, Object> error = new HashMap<>();
+            error.put("success", false);
+            error.put("message", "Database connection failed: " + e.getMessage());
+            return ResponseEntity.status(500).body(error);
+        }
+    }
+
+    // 🔧 Create super admin manually
+    @PostMapping("/create-super-admin")
+    public ResponseEntity<Map<String, Object>> createSuperAdmin(@RequestBody Map<String, String> request) {
+        try {
+            String email = request.get("email");
+            String password = request.get("password");
+            String name = request.get("name");
+            String phoneNumber = request.get("phoneNumber");
+            
+            if (email == null || password == null) {
+                Map<String, Object> error = new HashMap<>();
+                error.put("success", false);
+                error.put("message", "Email and password are required");
+                return ResponseEntity.badRequest().body(error);
+            }
+            
+            // Check if user already exists
+            try {
+                User existingUser = userService.getUserByEmailOrPhone(email);
+                Map<String, Object> response = new HashMap<>();
+                response.put("success", false);
+                response.put("message", "User already exists");
+                response.put("user", Map.of(
+                    "id", existingUser.getId(),
+                    "email", existingUser.getEmail(),
+                    "role", existingUser.getRole().name(),
+                    "status", existingUser.getStatus().name()
+                ));
+                return ResponseEntity.ok(response);
+            } catch (Exception e) {
+                // User doesn't exist, create it
+            }
+            
+            // Create new super admin user
+            User superAdmin = User.builder()
+                    .name(name != null ? name : "Super Admin")
+                    .email(email)
+                    .phoneNumber(phoneNumber != null ? phoneNumber : "9999999999")
+                    .password(passwordEncoder.encode(password))
+                    .dateOfBirth(LocalDate.of(1990, 1, 1))
+                    .gender("Other")
+                    .role(Role.SUPER_ADMIN)
+                    .status(UserStatus.APPROVED)
+                    .forcePasswordChange(false)
+                    .build();
+            
+            User savedUser = userService.createUserBySuperAdmin(superAdmin);
+            
+            Map<String, Object> response = new HashMap<>();
+            response.put("success", true);
+            response.put("message", "Super admin created successfully");
+            response.put("user", Map.of(
+                "id", savedUser.getId(),
+                "email", savedUser.getEmail(),
+                "name", savedUser.getName(),
+                "role", savedUser.getRole().name(),
+                "status", savedUser.getStatus().name()
+            ));
+            
+            return ResponseEntity.ok(response);
+        } catch (Exception e) {
+            Map<String, Object> error = new HashMap<>();
+            error.put("success", false);
+            error.put("message", "Failed to create super admin: " + e.getMessage());
+            return ResponseEntity.status(500).body(error);
         }
     }
 }
